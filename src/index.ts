@@ -11,11 +11,11 @@ void activateBot()
 
 
 const app = express()
-const port = 3000
 
 app.get( '/', ( req, res ) => {
   res.json( { 'message': 'ok' } )
 } )
+
 // @ts-ignore
 app.use( ( err, req, res, next ) => {
   const statusCode = err.statusCode || 500
@@ -24,6 +24,6 @@ app.use( ( err, req, res, next ) => {
 
   return
 } )
-app.listen( port, () => {
-  console.log( `Example app listening at http://localhost:${port}` )
-} )
+// app.listen( port, () => {
+//   console.log( `Example app listening at http://localhost:${port}` )
+// } )
