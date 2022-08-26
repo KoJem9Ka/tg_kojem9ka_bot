@@ -3,6 +3,10 @@
   "version"        : "1.0.0",
   "description"    : "",
   "main"           : "build/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KoJem9Ka/tg_kojem9ka_bot.git"
+  },
   "scripts"        : {
     "prisma-pull": "prisma db pull",
     "prisma-gen" : "prisma generate",
@@ -11,7 +15,7 @@
     "dev"        : "ts-node-dev --respawn --transpile-only src/index.ts",
     
     "build"      : "tsc",
-    "start"      : "node build/main.js"
+    "start"      : "node build/index.js"
   },
   "keywords"       : [],
   "author"         : "",
