@@ -1,7 +1,7 @@
 import axios      from 'axios'
 import parse      from 'node-html-parser'
 import { isNil }  from 'lodash'
-import { prisma } from '../main'
+import { prisma } from '../index'
 
 
 

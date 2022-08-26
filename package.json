@@ -8,7 +8,7 @@
     "prisma-gen" : "prisma generate",
     "postinstall": "prisma generate",
     
-    "dev"        : "ts-node-dev --respawn --transpile-only src/main.ts",
+    "dev"        : "ts-node-dev --respawn --transpile-only src/index.ts",
     
     "build"      : "tsc",
     "start"      : "node src/main.js"

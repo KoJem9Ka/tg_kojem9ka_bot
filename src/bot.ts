@@ -1,6 +1,6 @@
-import TelegramBot       from 'node-telegram-bot-api'
-import { prisma }        from './main'
-import { isNil }         from 'lodash'
+import TelegramBot from 'node-telegram-bot-api'
+import { prisma }  from './index'
+import { isNil }   from 'lodash'
 import { checkSchedule } from './utils/checkSchedule'
 import { delay }         from './utils/utils'
 
