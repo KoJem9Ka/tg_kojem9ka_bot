@@ -1,8 +1,6 @@
 import 'dotenv/config'
-import { delay }         from './utils/utils'
-import { checkSchedule } from './utils/checkSchedule'
-import { PrismaClient }  from '../prisma/client'
-import { activateBot }   from './bot'
+import { PrismaClient } from '../prisma/client'
+import { activateBot }  from './bot'
 
 
 

@@ -43,6 +43,6 @@ export const activateBot = async () => {
       const chatIds = (await prisma.signed_chats.findMany()).map( obj => obj.chat_id )
       for ( const chatId of chatIds ) bot.sendMessage( chatId, `Новое расписание! ${check.text}` )
     }
-    await delay( 3000 )
+    await delay( 1000 * 60 * 25 )
   } while ( true )
 }
