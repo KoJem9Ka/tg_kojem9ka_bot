@@ -14,5 +14,5 @@ model memory {
 }
 
 model signed_chats {
-  chat_id String @id
+  id String @id
 }

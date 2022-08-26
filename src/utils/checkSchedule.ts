@@ -17,7 +17,7 @@ export const checkSchedule = async (): Promise<TCheckReturn> => {
   const ulElement = parse( data ).querySelector( '.content > ul:nth-child(3)' )
   if ( isNil( ulElement ) ) throw new Error( 'Элемент списка на странице не найден!' )
 
-  const match = data.match( /3 курс.*изменение: ([\d :-]+)/i )
+  const match = data.match( /3 курс.*?изменение: ([\d :-]+)/i )
   const fetchedDate = match?.[1]
   if ( !fetchedDate ) throw new Error( 'Не найдена дата на странице!' )
 

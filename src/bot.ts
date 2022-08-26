@@ -15,9 +15,9 @@ export const activateBot = async () => {
 
   bot.onText( /^\/sign$/, async ( msg, match ) => {
     const chat_id = msg.chat.id.toString()
-    const founded = await prisma.signed_chats.findUnique( { where: { chat_id } } )
+    const founded = await prisma.signed_chats.findUnique( { where: { id: chat_id } } )
     if ( isNil( founded ) ) {
-      await prisma.signed_chats.create( { data: { chat_id: chat_id } } )
+      await prisma.signed_chats.create( { data: { id: chat_id } } )
       await bot.sendMessage( chat_id, `Чат успешно подписан!` )
     } else {
       await bot.sendMessage( chat_id, `Так нельзя, чат уже был подписан.` )
@@ -26,11 +26,11 @@ export const activateBot = async () => {
 
   bot.onText( /^\/unsign$/, async ( msg, match ) => {
     const chat_id = msg.chat.id.toString()
-    const founded = await prisma.signed_chats.findUnique( { where: { chat_id } } )
+    const founded = await prisma.signed_chats.findUnique( { where: { id: chat_id } } )
     if ( isNil( founded ) ) {
       await bot.sendMessage( chat_id, `Так нельзя, текущий чат не был подписан.` )
     } else {
-      await prisma.signed_chats.delete( { where: { chat_id } } )
+      await prisma.signed_chats.delete( { where: { id: chat_id } } )
       await bot.sendMessage( chat_id, `Чат успешно отписан!` )
     }
   } )
@@ -40,7 +40,7 @@ export const activateBot = async () => {
     const check = await checkSchedule()
     if ( check.changed ) {
       console.log( 'Новое расписание!' )
-      const chatIds = (await prisma.signed_chats.findMany()).map( obj => obj.chat_id )
+      const chatIds = (await prisma.signed_chats.findMany()).map( obj => obj.id )
       for ( const chatId of chatIds ) bot.sendMessage( chatId, `Новое расписание! ${check.text}` )
     }
     await delay( 1000 * 60 * 25 )
