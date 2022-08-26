@@ -10,8 +10,8 @@
     
     "dev"        : "ts-node-dev --respawn --transpile-only src/main.ts",
     
-    "build"      : "tsc && node build/main.js",
-    "start"      : "ts-node-dev --transpile-only src/main.ts"
+    "build"      : "tsc",
+    "start"      : "node src/main.js"
   },
   "keywords"       : [],
   "author"         : "",
