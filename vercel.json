@@ -1,6 +1,9 @@
 {
   "version": 2,
   "name": "tg_bot",
+  "builds": [
+    { "src": "build/index.js", "use": "@vercel/node" }
+  ],
   "routes": [
     { "src": "/(.*)", "dest": "build/index.js" }
   ]
