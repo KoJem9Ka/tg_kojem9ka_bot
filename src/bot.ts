@@ -24,7 +24,7 @@ const checkScheduleBot = async ( bot: TelegramBot ) => {
 export const activateBot = async () => {
   const bot = new TelegramBot( process.env.BOT_TOKEN, { polling: true } )
 
-  bot.setMyCommands( [
+  await bot.setMyCommands( [
     {
       command:     'sign',
       description: 'Подписать канал на обновления',
