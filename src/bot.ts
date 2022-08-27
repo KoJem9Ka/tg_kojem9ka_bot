@@ -1,16 +1,34 @@
-import TelegramBot from 'node-telegram-bot-api'
-import { prisma }  from './index'
-import { isNil }   from 'lodash'
+import TelegramBot       from 'node-telegram-bot-api'
+import { prisma }        from './index'
+import {
+  compact,
+  isNil,
+}                        from 'lodash'
 import { checkSchedule } from './utils/checkSchedule'
 import { delay }         from './utils/utils'
 
 
 
+const checkScheduleBot = async ( bot: TelegramBot ) => {
+  console.log( 'check start' )
+  const check = await checkSchedule()
+  console.log( 'check end' )
+  if ( check.changed ) {
+    console.log( 'Новое расписание!' )
+    const chatIds = (await prisma.signed_chats.findMany()).map( obj => obj.id )
+    for ( const chatId of chatIds ) bot.sendMessage( chatId, `Новое расписание! ${check.text}` )
+  }
+  return check.changed
+}
+
 export const activateBot = async () => {
   const bot = new TelegramBot( process.env.BOT_TOKEN, { polling: true } )
 
-  bot.onText( /^\/check$/, ( msg, match ) => {
-    void bot.sendMessage( msg.chat.id, `${msg.chat.id}` )
+  bot.onText( /^\/check$/, async ( msg, match ) => {
+    if ( !await checkScheduleBot( bot ) ) {
+      const memory = await prisma.memory.findUnique( { where: { id: 1 } } )
+      await bot.sendMessage( msg.chat.id, compact( [ `Без изменений`, memory?.date ] ).join( ', ' ) )
+    }
   } )
 
   bot.onText( /^\/sign$/, async ( msg, match ) => {
@@ -36,15 +54,7 @@ export const activateBot = async () => {
   } )
 
   do {
-    console.log( 'check start' )
-    const check = await checkSchedule()
-    console.log( 'check end' )
-    if ( check.changed ) {
-      console.log( 'Новое расписание!' )
-      const chatIds = (await prisma.signed_chats.findMany()).map( obj => obj.id )
-      for ( const chatId of chatIds ) bot.sendMessage( chatId, `Новое расписание! ${check.text}` )
-    }
+    await checkScheduleBot( bot )
     await delay( 1000 * 60 * 25 )
-    // await delay( 3000 )
   } while ( true )
 }
