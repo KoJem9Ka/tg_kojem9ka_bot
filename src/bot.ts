@@ -36,8 +36,9 @@ export const activateBot = async () => {
   } )
 
   do {
-    console.log( 'check' )
+    console.log( 'check start' )
     const check = await checkSchedule()
+    console.log( 'check end' )
     if ( check.changed ) {
       console.log( 'Новое расписание!' )
       const chatIds = (await prisma.signed_chats.findMany()).map( obj => obj.id )
