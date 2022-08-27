@@ -11,20 +11,12 @@ void activateBot()
 
 
 const app = express()
-const port = process.env.PORT || 4000
-
-app.get( '/', ( req, res ) => {
-  res.json( { 'message': 'ok' } )
+const port = process.env.PORT || 5000
+app.set( 'port', port )
+app.get( '/', function ( request, response ) {
+  const result = 'App is running'
+  response.send( result )
 } )
-
-// @ts-ignore
-app.use( ( err, req, res, next ) => {
-  const statusCode = err.statusCode || 500
-  console.error( err.message, err.stack )
-  res.status( statusCode ).json( { 'message': err.message } )
-
-  return
-} )
-app.listen( port, () => {
-  console.log( `Example app listening at http://localhost:${port}` )
+app.listen( app.get( 'port' ), function () {
+  console.log( 'App is running, server is listening on port ', app.get( 'port' ) )
 } )
