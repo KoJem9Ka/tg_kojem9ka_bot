@@ -1,7 +1,13 @@
 {
   "version": 2,
-  "name": "tg_bot",
-  "routes": [
-    { "src": "/(.*)", "dest": "/" }
+  "builds": [{
+    "src": "/src/index.ts",
+    "use": "@now/node-server"
+  }],
+  "routes": [{"handle": "filesystem"},
+    {
+      "src": "/.*",
+      "dest": "/build/index.js"
+    }
   ]
 }
