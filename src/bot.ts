@@ -24,6 +24,21 @@ const checkScheduleBot = async ( bot: TelegramBot ) => {
 export const activateBot = async () => {
   const bot = new TelegramBot( process.env.BOT_TOKEN, { polling: true } )
 
+  bot.setMyCommands( [
+    {
+      command:     'sign',
+      description: 'Подписать канал на обновления',
+    },
+    {
+      command:     'unsign',
+      description: 'Отписать канал от обновлений',
+    },
+    {
+      command:     'check',
+      description: 'Проверить обновления расписаний',
+    },
+  ] )
+
   bot.onText( /^\/check$/, async ( msg, match ) => {
     if ( !await checkScheduleBot( bot ) ) {
       const memory = await prisma.memory.findUnique( { where: { id: 1 } } )
