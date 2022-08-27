@@ -39,14 +39,14 @@ export const activateBot = async () => {
     },
   ] )
 
-  bot.onText( /^\/check$/, async ( msg, match ) => {
+  bot.onText( /^\/check(@kojem9ka_bot)?$/, async ( msg, match ) => {
     if ( !await checkScheduleBot( bot ) ) {
       const memory = await prisma.memory.findUnique( { where: { id: 1 } } )
       await bot.sendMessage( msg.chat.id, compact( [ `Без изменений`, memory?.date ] ).join( ', ' ) )
     }
   } )
 
-  bot.onText( /^\/sign$/, async ( msg, match ) => {
+  bot.onText( /^\/sign(@kojem9ka_bot)?$/, async ( msg, match ) => {
     const chat_id = msg.chat.id.toString()
     const founded = await prisma.signed_chats.findUnique( { where: { id: chat_id } } )
     if ( isNil( founded ) ) {
@@ -57,7 +57,7 @@ export const activateBot = async () => {
     }
   } )
 
-  bot.onText( /^\/unsign$/, async ( msg, match ) => {
+  bot.onText( /^\/unsign(@kojem9ka_bot)?$/, async ( msg, match ) => {
     const chat_id = msg.chat.id.toString()
     const founded = await prisma.signed_chats.findUnique( { where: { id: chat_id } } )
     if ( isNil( founded ) ) {

@@ -4,15 +4,15 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:../database.sqlite"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model memory {
   id   Int     @id @default(autoincrement())
-  date String?
+  date String? @db.VarChar(100)
 }
 
 model signed_chats {
-  id String @id
+  id String @id @db.VarChar(100)
 }
