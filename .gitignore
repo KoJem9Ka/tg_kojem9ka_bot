@@ -1,4 +1,4 @@
 node_modules
 .env
-/build/
-/prisma/client/
+build
+prisma/client
