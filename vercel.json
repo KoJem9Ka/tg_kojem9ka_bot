@@ -2,7 +2,7 @@
   "version": 2,
   "routes": [{"handle": "filesystem"},
     {
-      "src": "/.*",
+      "src": "/api/.*",
       "dest": "/build/index.js"
     }
   ]
