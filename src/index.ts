@@ -6,6 +6,7 @@ import { activateBot }  from './bot'
 
 
 console.clear()
+console.log( 'App starting!...' )
 export const prisma = new PrismaClient()
 void activateBot()
 
