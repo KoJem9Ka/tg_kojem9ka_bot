@@ -13,7 +13,7 @@ const checkScheduleBot = async ( bot: TelegramBot ): Promise<string | boolean> =
   try {
     const check = await checkSchedule()
     if ( check.isChanged ) {
-      const chatIds = (await prisma.signed_chats.findMany()).map( obj => obj.id )
+      const chatIds = (await prisma.subscribed_chats.findMany()).map( obj => obj.id )
       for ( const chatId of chatIds ) bot.sendMessage( chatId, `⚠ Новое расписание! ${check.text}` )
     }
     return check.isChanged
@@ -28,11 +28,11 @@ export const activateBot = async () => {
 
   await bot.setMyCommands( [
     {
-      command:     'sign',
+      command:     'subscribe',
       description: '✔ Подписать чат на уведомления',
     },
     {
-      command:     'unsign',
+      command:     'un_subscribe',
       description: '❌ Отписать чат от уведомлений',
     },
     {
@@ -55,24 +55,24 @@ export const activateBot = async () => {
       await bot.sendMessage( chat_id, `Ошибка: ${check}` )
   } )
 
-  bot.onText( /^\/sign(@kojem9ka_bot)?$/, async ( msg, match ) => {
+  bot.onText( /^\/subscribe(@kojem9ka_bot)?$/, async ( msg, match ) => {
     const chat_id = msg.chat.id.toString()
-    const founded = await prisma.signed_chats.findUnique( { where: { id: chat_id } } )
+    const founded = await prisma.subscribed_chats.findUnique( { where: { id: chat_id } } )
     if ( isNil( founded ) ) {
-      await prisma.signed_chats.create( { data: { id: chat_id } } )
+      await prisma.subscribed_chats.create( { data: { id: chat_id } } )
       await bot.sendMessage( chat_id, `✅ Чат успешно подписан на автоматические уведомления!` )
     } else {
       await bot.sendMessage( chat_id, `🤓 Ничего не изменилось, чат уже был подписан на уведомления.` )
     }
   } )
 
-  bot.onText( /^\/unsign(@kojem9ka_bot)?$/, async ( msg, match ) => {
+  bot.onText( /^\/un_subscribe(@kojem9ka_bot)?$/, async ( msg, match ) => {
     const chat_id = msg.chat.id.toString()
-    const founded = await prisma.signed_chats.findUnique( { where: { id: chat_id } } )
+    const founded = await prisma.subscribed_chats.findUnique( { where: { id: chat_id } } )
     if ( isNil( founded ) ) {
       await bot.sendMessage( chat_id, `🤓 Ничего не изменилось, чат не был подписан на уведомления.` )
     } else {
-      await prisma.signed_chats.delete( { where: { id: chat_id } } )
+      await prisma.subscribed_chats.delete( { where: { id: chat_id } } )
       await bot.sendMessage( chat_id, `✅ Чат успешно отписан, теперь вы НЕ будете уведомлены 🤐` )
     }
   } )

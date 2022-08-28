@@ -13,6 +13,6 @@ model memory {
   date String? @db.VarChar(100)
 }
 
-model signed_chats {
-  id String @id @db.VarChar(100)
+model subscribed_chats {
+  id String @id(map: "signed_chats_pkey") @db.VarChar(100)
 }
