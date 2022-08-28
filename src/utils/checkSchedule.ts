@@ -5,15 +5,23 @@ import { prisma } from '../index'
 
 
 
-type TCheckReturn = {
-  changed: true
+export type TCheckReturn = {
+  isChanged: true
   text: string
 } | {
-  changed: false
+  isChanged: false
 }
 
 export const checkSchedule = async (): Promise<TCheckReturn> => {
-  const { data } = await axios.get<string>( 'https://www.vstu.ru/student/raspisaniya/zanyatiy/index.php?dep=fevt' )
+  let data: string
+  try {
+    console.log( 'fetch start' )
+    data = (await axios.get<string>( 'https://www.vstu.ru/student/raspisaniya/zanyatiy/index.php?dep=fevt' )).data
+  } catch ( e ) {
+    console.error( 'fetch error!' )
+    throw new Error( 'Не удалось загрузить URL' )
+  }
+  console.log( 'fetch success!' )
   const ulElement = parse( data ).querySelector( '.content > ul:nth-child(3)' )
   if ( isNil( ulElement ) ) throw new Error( 'Элемент списка на странице не найден!' )
 
@@ -26,16 +34,17 @@ export const checkSchedule = async (): Promise<TCheckReturn> => {
   if ( isNil( memory ) ) {
     await prisma.memory.create( { data: { id: 1, date: fetchedDate } } )
     return {
-      changed: true,
+      isChanged: true,
       text:    fetchedDate,
     }
   }
   if ( memory.date !== fetchedDate ) {
+    console.log( 'NEW SCHEDULE!' )
     await prisma.memory.update( { where: { id: 1 }, data: { date: fetchedDate } } )
     return {
-      changed: true,
+      isChanged: true,
       text:    `${memory.date} -> ${fetchedDate}`,
     }
   }
-  return { changed: false }
+  return { isChanged: false }
 }

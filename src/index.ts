@@ -1,7 +1,7 @@
 import 'dotenv/config'
-import express          from 'express'
-import { PrismaClient } from '../prisma/client'
 import { activateBot }  from './bot'
+import { PrismaClient } from '../prisma/client'
+import express from 'express'
 
 
 
@@ -21,3 +21,5 @@ app.get( '/', function ( request, response ) {
 app.listen( app.get( 'port' ), function () {
   console.log( 'App is running, server is listening on port ', app.get( 'port' ) )
 } )
+
+console.log( 'App started!' )
