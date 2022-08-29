@@ -34,3 +34,6 @@ const checkingCycle = async () => {
   }
 }
 process.env.IS_DEV !== '1' && void checkingCycle()
+
+process.once( 'SIGINT', () => bot.stopPolling() )
+process.once( 'SIGTERM', () => bot.stopPolling() )
