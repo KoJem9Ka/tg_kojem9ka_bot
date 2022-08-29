@@ -1,3 +1,3 @@
 import './ForAny'
-import './PingPong'
-import './stickers'
+// import './PingPong'
+// import './stickers'

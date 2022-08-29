@@ -4,7 +4,7 @@ import { checkScheduleBot } from './methods'
 
 
 
-export const bot = new TelegramBot( process.env.BOT_TOKEN, { polling: true, onlyFirstMatch: true } )
+export const bot = new TelegramBot( process.env.BOT_TOKEN, { polling: true } )
 require( './handlers' )
 
 void bot.setMyCommands( [
