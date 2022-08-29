@@ -9,10 +9,28 @@ datasource db {
 }
 
 model memory {
-  id   Int     @id @default(autoincrement())
-  date String? @db.VarChar(100)
+  id      Int     @id @default(autoincrement())
+  date    String  @db.VarChar(100)
+  file_id String? @db.VarChar(255)
 }
 
-model subscribed_chats {
+model admin {
+  id Int @id(map: "admins_pkey")
+}
+
+model subscribed_chat {
   id String @id(map: "signed_chats_pkey") @db.VarChar(100)
+}
+
+model context {
+  userId  Int    @id
+  context String @db.VarChar(25)
+}
+
+model sticker_list {
+  name         String @db.VarChar(25)
+  file_uniq_id String @db.VarChar(256)
+  file_id      String @db.VarChar(256)
+
+  @@id([name, file_uniq_id, file_id])
 }

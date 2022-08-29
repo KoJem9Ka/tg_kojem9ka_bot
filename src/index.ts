@@ -1,25 +1,23 @@
 import 'dotenv/config'
-import { activateBot }  from './bot'
 import { PrismaClient } from '../prisma/client'
-import express from 'express'
 
 
+
+export const prisma = new PrismaClient()
 
 console.clear()
-console.log( 'App starting!...' )
-export const prisma = new PrismaClient()
-void activateBot()
+require( './utils/server' )
+require( './bot' )
+console.log( 'APP STARTED!' )
 
 
-const app = express()
-const port = process.env.PORT || 5000
-app.set( 'port', port )
-app.get( '/', function ( request, response ) {
-  const result = 'App is running'
-  response.send( result )
-} )
-app.listen( app.get( 'port' ), function () {
-  console.log( 'App is running, server is listening on port ', app.get( 'port' ) )
-} )
-
-console.log( 'App started!' )
+// const app = express()
+// const port = process.env.PORT || 5000
+// app.set( 'port', port )
+// app.get( '/', function ( request, response ) {
+//   const result = 'App is running'
+//   response.send( result )
+// } )
+// app.listen( app.get( 'port' ), function () {
+//   console.log( 'App is running, server is listening on port ', app.get( 'port' ) )
+// } )
