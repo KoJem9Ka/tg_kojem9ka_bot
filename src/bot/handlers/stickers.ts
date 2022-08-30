@@ -14,7 +14,7 @@ import { sample } from 'lodash'
 bot.onText( botCommand( 'clown' ), async ( msg, match ) => {
   const repliedId = msg.reply_to_message?.message_id
   if ( repliedId ) {
-    await bot.deleteMessage( msg.chat.id, msg.message_id.toString() ).catch()
+    await bot.deleteMessage( msg.chat.id, msg.message_id.toString() ).catch( () => undefined )
     const stickers = (await prisma.sticker_list.findMany( { where: { name: 'clown' } } )).map( sticker => sticker.file_id )
     const sticker = sample( stickers )!
     await bot.sendSticker( msg.chat.id, sticker, { reply_to_message_id: repliedId } )

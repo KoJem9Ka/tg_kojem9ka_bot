@@ -3,10 +3,10 @@ import parse, { HTMLElement } from 'node-html-parser'
 import {
   isEmpty,
   isNil,
-}                             from 'lodash'
-import { prisma }             from '../index'
-import { bot }                from '../bot'
-import { scheduleFileName }   from './utils'
+}                           from 'lodash'
+import { prisma }           from '../../index'
+import { bot }              from '../bot'
+import { scheduleFileName } from '../../utils/utils'
 
 
 

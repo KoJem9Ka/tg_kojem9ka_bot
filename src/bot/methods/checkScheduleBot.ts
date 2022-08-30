@@ -1,6 +1,6 @@
-import { Message }          from 'node-telegram-bot-api'
-import { fetchSchedule }    from '../../utils/FetchSchedule'
-import { prisma }           from '../../index'
+import { Message }       from 'node-telegram-bot-api'
+import { fetchSchedule } from './fetchSchedule'
+import { prisma }        from '../../index'
 import { bot }              from '../bot'
 import {
   compact,
@@ -15,7 +15,7 @@ export const checkScheduleBot = async ( msg?: Message ): Promise<void> => {
     const check = await fetchSchedule()
     const memory = await prisma.memory.findUnique( { where: { id: 1 } } )
     if ( check.isChanged ) {
-      if ( msg ) bot.deleteMessage( msg.chat.id, msg.message_id.toString() ).catch()
+      if ( msg ) bot.deleteMessage( msg.chat.id, msg.message_id.toString() ).catch( () => undefined )
       const subscribedIds = (await prisma.subscribed_chat.findMany()).map( obj => obj.id )
       for ( const chatId of subscribedIds ) bot.sendDocument( chatId, memory?.file_id!, { caption: `⚠ Новое расписание!\n${check.text}` }, {
         filename:    scheduleFileName( memory?.date || '' ),
