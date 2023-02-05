@@ -3,10 +3,10 @@ import parse, { HTMLElement } from 'node-html-parser'
 import {
   isEmpty,
   isNil,
-}                           from 'lodash'
-import { prisma }           from '../../index'
-import { bot }              from '../bot'
-import { scheduleFileName } from '../../utils/utils'
+}                             from 'lodash'
+import { state }              from '../../index'
+import { bot }                from '../bot'
+import { scheduleFileName }   from '../../utils/utils'
 
 
 
@@ -47,7 +47,7 @@ export const fetchSchedule = async (): Promise<TCheckReturn> => {
   const fetchedDate = (liElement.text.match( /3 курс.*?изменение: ([\d :-]+)/i ))?.[1]
   if ( !fetchedDate ) throw new Error( 'Не найдена дата на странице!' )
 
-  const memory = await prisma.memory.findUnique( { where: { id: 1 } } )
+  const memory = state.getMemory()
 
   if ( isNil( memory ) || memory.date !== fetchedDate ) {
     // Получение ссылки на файл и его скачивание
@@ -57,13 +57,10 @@ export const fetchSchedule = async (): Promise<TCheckReturn> => {
       filename:    scheduleFileName( fetchedDate || '' ),
       contentType: 'xls',
     } )
-    bot.deleteMessage( sentMsg.chat.id, sentMsg.message_id.toString() ).then()
-
-    if ( isNil( memory ) ) {
-      await prisma.memory.create( { data: { id: 1, date: fetchedDate, file_id: sentMsg.document?.file_id } } )
-    } else {
+    await state.setMemory( { date: fetchedDate, file_id: sentMsg.document?.file_id! } )
+    await bot.deleteMessage( sentMsg.chat.id, sentMsg.message_id.toString() )
+    if ( !isNil( memory ) ) {
       console.log( 'NEW SCHEDULE!' )
-      await prisma.memory.update( { where: { id: 1 }, data: { date: fetchedDate, file_id: sentMsg.document?.file_id } } )
       return {
         isChanged: true,
         text:      `${memory.date}\nᅠᅠᅠᅠ⬇\n${fetchedDate}`,

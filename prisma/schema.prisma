@@ -9,9 +9,9 @@ datasource db {
 }
 
 model memory {
-  id      Int     @id @default(autoincrement())
-  date    String  @db.VarChar(100)
-  file_id String? @db.VarChar(255)
+  id      Int    @id @default(autoincrement())
+  date    String @db.VarChar(100)
+  file_id String @db.VarChar(255)
 }
 
 model admin {

@@ -1,23 +1,24 @@
 import 'dotenv/config'
 import { PrismaClient } from '../prisma/client'
+import { StoreClass }   from './bot/store'
 
 
 
 export const prisma = new PrismaClient()
+export let state: StoreClass
 
-console.clear()
-require( './utils/server' )
-require( './bot' )
-console.log( 'APP STARTED!' )
+const main = async () => {
+  console.clear()
+  state = new StoreClass(
+    await prisma.admin.findMany(),
+    await prisma.context.findMany(),
+    await prisma.memory.findUnique( { where: { id: 1 } } ),
+    await prisma.subscribed_chat.findMany(),
+    await prisma.sticker_list.findMany(),
+  )
+  require( './utils/server' )
+  require( './bot' )
+  console.log( 'APP STARTED!' )
+}
 
-
-// const app = express()
-// const port = process.env.PORT || 5000
-// app.set( 'port', port )
-// app.get( '/', function ( request, response ) {
-//   const result = 'App is running'
-//   response.send( result )
-// } )
-// app.listen( app.get( 'port' ), function () {
-//   console.log( 'App is running, server is listening on port ', app.get( 'port' ) )
-// } )
+void main()
