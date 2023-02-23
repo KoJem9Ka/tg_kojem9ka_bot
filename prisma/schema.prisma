@@ -1,0 +1,27 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model admin {
+  id Int @id(map: "admin_pk") @default(autoincrement())
+}
+
+model schedule_memory {
+  date      DateTime @id(map: "schedule_memory_pk") @db.Timestamptz(6)
+  url       String   @db.VarChar(255)
+  file_id   String
+  checkedAt DateTime @default(now()) @db.Timestamptz(6)
+}
+
+model subscribed_chat {
+  id        BigInt  @id(map: "subscribed_chat_pk")
+  chat_name String
+  user      String?
+  is_active Boolean @default(true)
+}
